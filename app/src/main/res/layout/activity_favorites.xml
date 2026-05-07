@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".activities.FavoritesActivity">
+
+    <!-- Sayfa Başlığı -->
+    <TextView
+        android:id="@+id/tvFavoritesTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Favorilerim"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:paddingBottom="12dp"
+        tools:ignore="HardcodedText" />
+
+    <!-- Ürün Listesi -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvFavorites"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingBottom="8dp" />
+
+    <!-- Alt Navigasyon -->
+    <include
+        layout="@layout/bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom" />
+
+</LinearLayout>

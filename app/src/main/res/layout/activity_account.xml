@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp"
+    android:background="#FFF5FF">
+
+    <!-- Hoş geldiniz metni -->
+    <TextView
+        android:id="@+id/tvUserInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hoş geldiniz"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#333333"
+        android:paddingBottom="24dp"
+        android:textAlignment="center"
+        tools:ignore="HardcodedText" />
+
+    <!-- Sipariş geçmişi butonu -->
+    <Button
+        android:id="@+id/btnOrders"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sipariş Geçmişi"
+        android:backgroundTint="#6200EE"
+        android:textColor="#FFFFFF"
+        android:padding="12dp"
+        tools:ignore="HardcodedText" />
+
+    <!-- Adreslerim butonu -->
+    <Button
+        android:id="@+id/btnAddresses"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Adreslerim"
+        android:backgroundTint="#6200EE"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="12dp"
+        android:padding="12dp"
+        tools:ignore="HardcodedText" />
+
+    <!-- Çıkış yap butonu -->
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Çıkış Yap"
+        android:backgroundTint="#D32F2F"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="24dp"
+        android:padding="12dp"
+        tools:ignore="HardcodedText" />
+
+    <!-- Alt navigasyon çubuğu -->
+    <include
+        layout="@layout/bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp" />
+
+</LinearLayout>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        tools:ignore="UselessLeaf">
+
+        <!-- Ad -->
+        <EditText
+            android:id="@+id/etAd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Ad"
+            android:inputType="textPersonName"
+            android:padding="8dp"
+            tools:ignore="Autofill,HardcodedText" />
+
+        <!-- Soyad -->
+        <EditText
+            android:id="@+id/etSoyad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Soyad"
+            android:inputType="textPersonName"
+            android:padding="8dp"
+            android:layout_marginTop="8dp"
+            tools:ignore="Autofill,HardcodedText" />
+
+        <!-- E-posta -->
+        <EditText
+            android:id="@+id/etEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="E-posta"
+            android:inputType="textEmailAddress"
+            android:padding="8dp"
+            android:layout_marginTop="8dp"
+            tools:ignore="Autofill,HardcodedText" />
+
+        <!-- Telefon -->
+        <EditText
+            android:id="@+id/etTelefon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Telefon"
+            android:inputType="phone"
+            android:padding="8dp"
+            android:layout_marginTop="8dp"
+            tools:ignore="Autofill,HardcodedText" />
+
+        <!-- Şifre -->
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Şifre"
+            android:inputType="textPassword"
+            android:padding="8dp"
+            android:layout_marginTop="8dp"
+            tools:ignore="Autofill,HardcodedText" />
+
+        <!-- Cinsiyet Başlık -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cinsiyet Seçiniz"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginTop="12dp"
+            tools:ignore="HardcodedText" />
+
+        <!-- Cinsiyet RadioGroup -->
+        <RadioGroup
+            android:id="@+id/rgGender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+
+            <RadioButton
+                android:id="@+id/rbMale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Erkek"
+                tools:ignore="HardcodedText" />
+
+            <RadioButton
+                android:id="@+id/rbFemale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kadın"
+                android:layout_marginStart="24dp"
+                tools:ignore="HardcodedText" />
+        </RadioGroup>
+
+        <!-- Doğum Tarihi ve Takvim -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+
+            <EditText
+                android:id="@+id/etDogumTarihi"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:hint="Doğum Tarihi (GG.AA.YYYY)"
+                android:focusable="false"
+                android:inputType="none"
+                android:padding="8dp"
+                tools:ignore="Autofill,HardcodedText" />
+
+            <ImageView
+                android:id="@+id/btnCalendar"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="6dp"
+                android:src="@android:drawable/ic_menu_my_calendar"
+                android:contentDescription="Takvim Aç"
+                android:layout_marginStart="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                tools:ignore="HardcodedText" />
+        </LinearLayout>
+
+        <!-- Kayıt Ol Butonu -->
+        <Button
+            android:id="@+id/btnRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Kayıt Ol"
+            android:padding="12dp"
+            android:backgroundTint="#2196F3"
+            android:textColor="#fff"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
+</ScrollView>

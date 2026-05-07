@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Base.Theme.ETicaretSitesiSon" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your dark theme here. -->
+        <item name="colorPrimary">@color/nightPrimary</item>
+        <item name="colorPrimaryVariant">@color/nightPrimaryDark</item>
+        <item name="colorOnPrimary">@color/nightTextColor</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/nightSecondary</item>
+        <item name="colorSecondaryVariant">@color/nightSecondaryDark</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+    </style>
+
+    <style name="Theme.ETicaretSitesiSon" parent="Base.Theme.ETicaretSitesiSon" />
+</resources>

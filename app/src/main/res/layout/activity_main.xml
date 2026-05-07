@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF"
+    tools:context=".activities.MainActivity">
+
+    <!-- İçerik alanı -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- 🔍 Arama Kutusu -->
+            <EditText
+                android:id="@+id/etSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Marka, ürün veya kategori ara"
+                android:drawableStart="@android:drawable/ic_menu_search"
+                android:padding="10dp"
+                android:background="@android:drawable/edit_text"
+                android:layout_marginBottom="12dp"
+                tools:ignore="Autofill,HardcodedText,TextFields" />
+
+            <!-- 🔘 Yatay Kategori Listesi -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvCategories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:overScrollMode="never"
+                android:scrollbars="none"
+                tools:listitem="@layout/item_category" />
+
+            <!-- 🏷️ Başlık: Popüler Ürünler -->
+            <TextView
+                android:id="@+id/tvPopularTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Popüler Ürünler"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_marginBottom="6dp"
+                tools:ignore="HardcodedText" />
+
+            <!-- 📦 Popüler Ürünler -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvPopularProducts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:overScrollMode="never"
+                android:scrollbars="none"
+                android:layout_marginBottom="16dp"
+                tools:listitem="@layout/item_product" />
+
+            <!-- 🕐 Flaş Ürünler Başlık -->
+            <TextView
+                android:id="@+id/tvFlashTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Flaş Ürünler"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_marginBottom="6dp"
+                tools:ignore="HardcodedText" />
+
+            <!-- ⚡ Flaş Ürünler -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvFlashProducts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:overScrollMode="never"
+                android:scrollbars="none"
+                tools:listitem="@layout/item_product" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Alt Menü -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        app:menu="@menu/bottom_nav_menu"
+        app:itemIconTint="@color/black"
+        app:itemTextColor="@color/black" />
+</LinearLayout>
