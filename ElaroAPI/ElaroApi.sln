@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34309.116
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElaroApi", "ElaroApi\ElaroApi.csproj", "{A7B142B5-FB37-42F6-92D9-B88A31968FDF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A7B142B5-FB37-42F6-92D9-B88A31968FDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7B142B5-FB37-42F6-92D9-B88A31968FDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7B142B5-FB37-42F6-92D9-B88A31968FDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7B142B5-FB37-42F6-92D9-B88A31968FDF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {339B74C7-8434-4041-89D2-0F27E9C908D2}
+	EndGlobalSection
+EndGlobal
