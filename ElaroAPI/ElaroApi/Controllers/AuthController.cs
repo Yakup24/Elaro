@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
+using ElaroApi.Services;
 
 namespace ElaroApi.Controllers
 {
@@ -15,10 +16,12 @@ namespace ElaroApi.Controllers
     {
         private readonly AppDbContext _context;
         private readonly PasswordHasher<Musteri> _passwordHasher = new();
+        private readonly JwtTokenService _jwtTokenService;
 
-        public AuthController(AppDbContext context)
+        public AuthController(AppDbContext context, JwtTokenService jwtTokenService)
         {
             _context = context;
+            _jwtTokenService = jwtTokenService;
         }
 
         // ✅ POST: api/auth/register
@@ -77,23 +80,26 @@ namespace ElaroApi.Controllers
                     return Unauthorized(new { message = "Geçersiz e-posta veya şifre." });
 
                 var dogrulama = _passwordHasher.VerifyHashedPassword(kullanici, kullanici.Sifre, istek.Sifre);
-                var eskiDuzMetinSifre = dogrulama == PasswordVerificationResult.Failed && kullanici.Sifre == istek.Sifre;
 
-                if (dogrulama == PasswordVerificationResult.Failed && !eskiDuzMetinSifre)
+                if (dogrulama == PasswordVerificationResult.Failed)
                     return Unauthorized(new { message = "Geçersiz e-posta veya şifre." });
 
-                if (eskiDuzMetinSifre || dogrulama == PasswordVerificationResult.SuccessRehashNeeded)
+                if (dogrulama == PasswordVerificationResult.SuccessRehashNeeded)
                 {
                     kullanici.Sifre = _passwordHasher.HashPassword(kullanici, istek.Sifre);
                     await _context.SaveChangesAsync();
                 }
+
+                var token = _jwtTokenService.CreateCustomerToken(kullanici);
 
                 return Ok(new
                 {
                     kullanici.MusteriID,
                     kullanici.Ad,
                     kullanici.Soyad,
-                    kullanici.Eposta
+                    kullanici.Eposta,
+                    accessToken = token.AccessToken,
+                    expiresAt = token.ExpiresAt
                 });
             }
             catch (Exception ex)

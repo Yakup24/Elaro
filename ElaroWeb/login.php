@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once __DIR__ . '/security.php';
 
 if (isset($_SESSION['username'])) {
     header("Location: index.php");
@@ -18,6 +18,8 @@ if (isset($_SESSION['kayit_mesaji'])) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    require_csrf();
+
     $email = $_POST["email"];
     $password = $_POST["password"];
 
@@ -27,20 +29,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     $storedPassword = $user["Sifre"] ?? "";
-    $passwordValid = $user && (password_verify($password, $storedPassword) || hash_equals($storedPassword, $password));
+    $passwordValid = $user && password_verify($password, $storedPassword);
 
     if ($passwordValid) {
-        if (hash_equals($storedPassword, $password)) {
-            $newHash = password_hash($password, PASSWORD_DEFAULT);
-            $update = $conn->prepare("UPDATE dbo.[Musteri2] SET Sifre = :hash WHERE MusteriID = :id");
-            $update->execute([':hash' => $newHash, ':id' => $user["MusteriID"]]);
-        }
-
         session_regenerate_id(true);
         $_SESSION['username'] = $user["Ad"] . ' ' . $user["Soyad"];
         $_SESSION['giris_tarihi'] = date("Y-m-d H:i:s");
 
-        if (hash_equals($adminEmail, $user["Eposta"])) {
+        if (hash_equals(strtolower($adminEmail), strtolower($user["Eposta"]))) {
             header("Location: admin/panel.php");
         } else {
             header("Location: index.php");
@@ -149,6 +145,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <p class="error"><?php echo $error; ?></p>
         <?php endif; ?>
         <form method="post">
+            <?= csrf_field() ?>
             <label for="email">E-Posta:</label>
             <input type="text" id="email" name="email" required>
             <label for="password">Sifre:</label>

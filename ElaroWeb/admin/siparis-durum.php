@@ -7,6 +7,8 @@ if (!isset($_POST['id'], $_POST['durum'])) {
     exit;
 }
 
+require_csrf();
+
 $id = (int) $_POST['id'];
 $durum = $_POST['durum'];
 

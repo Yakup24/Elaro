@@ -4,6 +4,8 @@ include("db.php");
 $mesaj = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    require_csrf();
+
     $mevcut = $_POST['mevcut'] ?? '';
     $yeni = $_POST['yeni'] ?? '';
 
@@ -12,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $admin = $stmt->fetch(PDO::FETCH_ASSOC);
     $storedPassword = $admin['Sifre'] ?? '';
 
-    $passwordValid = $admin && (password_verify($mevcut, $storedPassword) || hash_equals($storedPassword, $mevcut));
+    $passwordValid = $admin && password_verify($mevcut, $storedPassword);
 
     if ($passwordValid) {
         $newHash = password_hash($yeni, PASSWORD_DEFAULT);
@@ -33,6 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
 <h2>Parola Değiştir</h2>
 <form method="post">
+    <?= csrf_field() ?>
     <label>Mevcut Parola:</label><br>
     <input name="mevcut" type="password" required><br><br>
     <label>Yeni Parola:</label><br>

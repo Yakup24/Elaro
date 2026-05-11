@@ -41,6 +41,10 @@ API icin:
 
 ```bash
 ConnectionStrings__DefaultConnection="Server=...;Database=...;User ID=...;Password=...;Encrypt=True;TrustServerCertificate=False;"
+Jwt__Issuer="Elaro"
+Jwt__Audience="ElaroClients"
+Jwt__Key="replace-with-a-32-byte-minimum-random-secret"
+Jwt__AccessTokenMinutes="60"
 Cors__AllowedOrigins__0="http://localhost"
 ```
 
@@ -101,8 +105,9 @@ CI pipeline'i API build, PHP lint, Android debug build ve secret guard kontrolle
 
 - Veritabani credential'lari ve publish profile dosyalari repoda tutulmaz.
 - API CORS origin'leri whitelist olarak konfigure edilir.
+- API login endpoint'leri JWT access token uretir; adres, siparis ve odeme endpoint'leri token ile korunur.
 - API auth endpoint'leri ve genel endpoint'ler icin rate limiting vardir.
-- PHP tarafinda sifreler `password_hash` ile saklanir ve eski duz metin sifreler giris sirasinda hash'e tasinir.
+- PHP tarafinda sifreler `password_hash` ile saklanir; admin ve kullanici formlarinda CSRF token kullanilir.
 - Kart/CVV bilgisi kalici olarak saklanmaz; kart numarasi maskelenir.
 
 Guvenlik acigi bildirmek icin [SECURITY.md](SECURITY.md) dosyasini takip edin.

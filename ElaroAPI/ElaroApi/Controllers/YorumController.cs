@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ElaroApi.Data;
 using ElaroApi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 namespace ElaroApi.Controllers
@@ -37,6 +38,7 @@ namespace ElaroApi.Controllers
 
         // POST: api/yorum
         [HttpPost]
+        [Authorize(Policy = "CustomerOrAdmin")]
         public async Task<IActionResult> CreateComment([FromBody] Yorum yeniYorum)
         {
             yeniYorum.Tarih = DateTime.Now;

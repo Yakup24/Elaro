@@ -54,6 +54,7 @@ class LoginActivity : AppCompatActivity() {
                         user.Ad?.let { SessionManager.firstName = it }
                         user.Soyad?.let { SessionManager.lastName = it }
                         user.Eposta?.let { SessionManager.loginEmail = it }
+                        user.accessToken?.let { SessionManager.accessToken = it }
 
                         Toast.makeText(this@LoginActivity, "Giriş başarılı", Toast.LENGTH_SHORT).show()
                         startActivity(Intent(this@LoginActivity, MainActivity::class.java))

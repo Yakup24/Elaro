@@ -4,6 +4,7 @@ using ElaroApi.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
+using ElaroApi.Services;
 
 namespace ElaroApi.Controllers
 {
@@ -14,10 +15,12 @@ namespace ElaroApi.Controllers
     {
         private readonly AppDbContext _context;
         private readonly PasswordHasher<Yonetici> _passwordHasher = new();
+        private readonly JwtTokenService _jwtTokenService;
 
-        public YoneticiController(AppDbContext context)
+        public YoneticiController(AppDbContext context, JwtTokenService jwtTokenService)
         {
             _context = context;
+            _jwtTokenService = jwtTokenService;
         }
 
         // GET: api/yonetici
@@ -38,22 +41,25 @@ namespace ElaroApi.Controllers
                 return Unauthorized(new { message = "Geçersiz kullanıcı adı veya şifre." });
 
             var dogrulama = _passwordHasher.VerifyHashedPassword(yonetici, yonetici.Sifre, request.Sifre);
-            var eskiDuzMetinSifre = dogrulama == PasswordVerificationResult.Failed && yonetici.Sifre == request.Sifre;
 
-            if (dogrulama == PasswordVerificationResult.Failed && !eskiDuzMetinSifre)
+            if (dogrulama == PasswordVerificationResult.Failed)
                 return Unauthorized(new { message = "Geçersiz kullanıcı adı veya şifre." });
 
-            if (eskiDuzMetinSifre || dogrulama == PasswordVerificationResult.SuccessRehashNeeded)
+            if (dogrulama == PasswordVerificationResult.SuccessRehashNeeded)
             {
                 yonetici.Sifre = _passwordHasher.HashPassword(yonetici, request.Sifre);
                 await _context.SaveChangesAsync();
             }
 
+            var token = _jwtTokenService.CreateAdminToken(yonetici);
+
             return Ok(new
             {
                 yonetici.YoneticiID,
                 yonetici.AdSoyad,
-                yonetici.Email
+                yonetici.Email,
+                accessToken = token.AccessToken,
+                expiresAt = token.ExpiresAt
             });
         }
     }

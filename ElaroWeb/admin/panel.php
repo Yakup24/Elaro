@@ -63,7 +63,13 @@ $urunler = $baglanti->query("SELECT * FROM Urun2 ORDER BY UrunID DESC")->fetchAl
         <tr>
           <td><?= htmlspecialchars($urun['Adi']) ?></td>
           <td><?= number_format($urun['Fiyat'], 2) ?> TL</td>
-          <td><a href="urun-sil.php?id=<?= $urun['UrunID'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Ürünü silmek istediğinizden emin misiniz?')">Sil</a></td>
+          <td>
+            <form method="post" action="urun-sil.php" onsubmit="return confirm('Ürünü silmek istediğinizden emin misiniz?')" class="d-inline">
+              <?= csrf_field() ?>
+              <input type="hidden" name="id" value="<?= (int)$urun['UrunID'] ?>">
+              <button type="submit" class="btn btn-danger btn-sm">Sil</button>
+            </form>
+          </td>
         </tr>
       <?php endforeach; ?>
     </tbody>

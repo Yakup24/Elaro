@@ -12,6 +12,8 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
 $urunID = (int) $_GET['id'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    require_csrf();
+
     $ad = $_POST['ad'];
     $aciklama = $_POST['aciklama'];
     $fiyat = $_POST['fiyat'];
@@ -46,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
 <h2>Ürün Güncelle</h2>
 <form method="post">
+    <?= csrf_field() ?>
     <input name="ad" value="<?= htmlspecialchars($urun['Ad']) ?>" required><br><br>
     <textarea name="aciklama" required><?= htmlspecialchars($urun['Aciklama']) ?></textarea><br><br>
     <input name="fiyat" type="number" step="0.01" value="<?= $urun['Fiyat'] ?>" required><br><br>

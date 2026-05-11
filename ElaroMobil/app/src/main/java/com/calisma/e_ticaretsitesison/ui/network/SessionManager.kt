@@ -41,6 +41,13 @@ object SessionManager {
             prefs?.edit()?.putString("last_name", value)?.apply()
         }
 
+    var accessToken: String
+        get() = prefs?.getString("access_token", "") ?: ""
+        @SuppressLint("ApplySharedPref", "UseKtx")
+        set(value) {
+            prefs?.edit()?.putString("access_token", value)?.apply()
+        }
+
     fun logout() {
         prefs?.edit()?.clear()?.apply()
     }

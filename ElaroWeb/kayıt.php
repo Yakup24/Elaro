@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once __DIR__ . '/security.php';
 
 // PHP'de saat dilimini Türkiye'ye ayarla
 date_default_timezone_set('Europe/Istanbul');
@@ -15,6 +15,8 @@ if (isset($_SESSION['username'])) {
 $error = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    require_csrf();
+
     $ad = $_POST["username"] ?? '';
     $soyad = $_POST["soyad"] ?? '';
     $email = $_POST["email"] ?? '';
@@ -155,6 +157,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <p class="error"><?php echo $error; ?></p>
         <?php endif; ?>
         <form method="post">
+            <?= csrf_field() ?>
             <label for="username">Ad:</label>
             <input type="text" id="username" name="username" required>
             <label for="soyad">Soyad:</label>

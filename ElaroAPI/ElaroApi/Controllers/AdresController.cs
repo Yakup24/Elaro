@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ElaroApi.Data;
 using ElaroApi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 namespace ElaroApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(Policy = "CustomerOrAdmin")]
     public class AdresController : ControllerBase
     {
         private readonly AppDbContext _context;

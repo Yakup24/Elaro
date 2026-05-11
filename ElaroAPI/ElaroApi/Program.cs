@@ -1,6 +1,10 @@
 ﻿using ElaroApi.Data;
+using ElaroApi.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,12 +23,26 @@ if (string.IsNullOrWhiteSpace(connectionString))
         "DefaultConnection is not configured. Set ConnectionStrings__DefaultConnection as an environment variable.");
 }
 
+var jwtIssuer = builder.Configuration["Jwt:Issuer"];
+var jwtAudience = builder.Configuration["Jwt:Audience"];
+var jwtKey = builder.Configuration["Jwt:Key"];
+
+if (string.IsNullOrWhiteSpace(jwtIssuer) ||
+    string.IsNullOrWhiteSpace(jwtAudience) ||
+    string.IsNullOrWhiteSpace(jwtKey) ||
+    Encoding.UTF8.GetByteCount(jwtKey) < 32)
+{
+    throw new InvalidOperationException(
+        "Jwt:Issuer, Jwt:Audience and a 32+ byte Jwt:Key must be configured.");
+}
+
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSingleton<JwtTokenService>();
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new()
@@ -33,6 +51,34 @@ builder.Services.AddSwaggerGen(options =>
         Version = "v1",
         Description = "Elaro e-commerce Web API"
     });
+});
+
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.RequireHttpsMetadata = !builder.Environment.IsDevelopment();
+        options.SaveToken = false;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = jwtIssuer,
+            ValidateAudience = true,
+            ValidAudience = jwtAudience,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.FromMinutes(1)
+        };
+    });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy =>
+        policy.RequireAuthenticatedUser().RequireRole("Admin"));
+
+    options.AddPolicy("CustomerOrAdmin", policy =>
+        policy.RequireAuthenticatedUser().RequireRole("Customer", "Admin"));
 });
 
 builder.Services.AddCors(options =>
@@ -114,13 +160,15 @@ if (enableSwagger)
 app.UseHttpsRedirection();
 app.UseCors("ConfiguredOrigins");
 app.UseRateLimiter();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapGet("/health", () => Results.Ok(new
 {
     status = "ok",
     service = "ElaroAPI",
     utc = DateTimeOffset.UtcNow
-})).RequireRateLimiting("Api");
+})).AllowAnonymous().RequireRateLimiting("Api");
 
 app.MapControllers();
 

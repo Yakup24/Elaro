@@ -8,6 +8,8 @@ $mesaj = "";
 $kategoriler = $baglanti->query("SELECT * FROM Kategori2")->fetchAll(PDO::FETCH_ASSOC);
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    require_csrf();
+
     $ad = $_POST["ad"];
     $aciklama = $_POST["aciklama"];
     $fiyat = $_POST["fiyat"];
@@ -50,6 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <?= $mesaj ?>
 
     <form method="post" class="bg-white p-4 rounded shadow-sm">
+        <?= csrf_field() ?>
         <div class="mb-3">
             <label>Ürün Adı</label>
             <input name="ad" class="form-control" required>
