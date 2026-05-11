@@ -2,6 +2,10 @@ version: 2
 updates:
   - package-ecosystem: nuget
     directory: /ElaroAPI/ElaroApi
+    groups:
+      dotnet-dependencies:
+        patterns:
+          - "*"
     schedule:
       interval: weekly
       day: monday
@@ -10,6 +14,10 @@ updates:
 
   - package-ecosystem: gradle
     directory: /ElaroMobil
+    groups:
+      android-dependencies:
+        patterns:
+          - "*"
     schedule:
       interval: weekly
       day: monday
@@ -18,6 +26,10 @@ updates:
 
   - package-ecosystem: github-actions
     directory: /
+    groups:
+      github-actions:
+        patterns:
+          - "*"
     schedule:
       interval: weekly
       day: monday
