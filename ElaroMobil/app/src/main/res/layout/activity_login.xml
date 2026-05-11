@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/etLoginEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="E-posta"
+        android:inputType="textEmailAddress"
+        android:padding="8dp"
+        tools:ignore="Autofill,HardcodedText" />
+
+    <EditText
+        android:id="@+id/etLoginPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Şifre"
+        android:inputType="textPassword"
+        android:padding="8dp"
+        android:layout_marginTop="8dp"
+        tools:ignore="Autofill,HardcodedText" />
+
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Giriş Yap"
+        android:padding="12dp"
+        android:backgroundTint="#4CAF50"
+        android:textColor="#fff"
+        android:layout_marginTop="16dp"
+        tools:ignore="HardcodedText" />
+
+    <!-- Kayıt sayfasına geçiş için link benzeri bir metin -->
+    <TextView
+        android:id="@+id/tvGoRegister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hesabınız yok mu? Kayıt olun."
+        android:textColor="#2196F3"
+        android:textSize="14sp"
+        android:paddingTop="12dp"
+        tools:ignore="HardcodedText" />
+    <Button
+        android:id="@+id/btnGoToRegister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Kayıt Ol"
+        android:layout_marginTop="16dp"
+        tools:ignore="HardcodedText" />
+
+    <include
+        layout="@layout/bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

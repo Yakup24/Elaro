@@ -1,0 +1,29 @@
+# Local secrets and environment files
+.env
+.env.*
+!.env.example
+appsettings.*.local.json
+appsettings.Production.json
+
+# Visual Studio / .NET user and publish artifacts
+*.user
+*.suo
+*.rsuser
+*.pubxml
+*.pubxml.user
+**/Properties/PublishProfiles/
+**/Properties/ServiceDependencies/
+**/bin/
+**/obj/
+
+# Android / Gradle local artifacts
+local.properties
+.gradle/
+build/
+**/build/
+
+# OS and editor noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- 🔍 Ürün arama kutusu -->
+    <EditText
+        android:id="@+id/etSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Ürün ara..."
+        android:drawableStart="@android:drawable/ic_menu_search"
+        android:padding="8dp"
+        android:background="@android:drawable/edit_text"
+        android:layout_marginBottom="12dp"
+        tools:ignore="Autofill,HardcodedText,TextFields" />
+
+    <!-- 📦 Kategoriler yatay RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvCategories"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:orientation="horizontal"
+        android:overScrollMode="never"
+        android:scrollbars="none"/>
+
+    <!-- 🏷️ Kategori başlığı -->
+    <TextView
+        android:id="@+id/tvCategoryTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Kategori: Tümü"
+        android:textSize="18sp"
+        android:padding="4dp"
+        android:textStyle="bold"
+        tools:ignore="HardcodedText" />
+
+    <!-- 💸 Fiyat filtresi -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dp">
+
+        <EditText
+            android:id="@+id/etMinPrice"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:hint="Min ₺"
+            android:inputType="numberDecimal"
+            tools:ignore="Autofill,HardcodedText" />
+
+        <EditText
+            android:id="@+id/etMaxPrice"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:hint="Max ₺"
+            android:inputType="numberDecimal"
+            android:layout_marginStart="8dp"
+            tools:ignore="Autofill,HardcodedText" />
+
+        <Button
+            android:id="@+id/btnApplyFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Filtrele"
+            android:layout_marginStart="8dp"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
+
+    <!-- 🛍️ Ürünler dikey RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvProducts"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="4dp"/>
+</LinearLayout>

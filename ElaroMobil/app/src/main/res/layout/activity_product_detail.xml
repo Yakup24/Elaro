@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/imgProductLarge"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:contentDescription="Ürün görseli büyük"
+            android:adjustViewBounds="true"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/tvProductNameDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ürün Adı"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:paddingTop="8dp"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/tvProductPriceDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="₺0.00"
+            android:textSize="18sp"
+            android:textColor="#E91E63"
+            android:paddingTop="4dp"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/tvProductDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Açıklama"
+            android:textSize="16sp"
+            android:paddingTop="8dp"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/tvProductDetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Marka / Renk / Beden / Stok"
+            android:textSize="15sp"
+            android:paddingTop="8dp"
+            tools:ignore="HardcodedText" />
+
+        <Button
+            android:id="@+id/btnAddToCart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sepete Ekle"
+            android:backgroundTint="#4CAF50"
+            android:textColor="#fff"
+            android:padding="12dp"
+            android:layout_marginTop="16dp"
+            tools:ignore="HardcodedText" />
+        <Button
+            android:id="@+id/btnAddToFavorites"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Favorilere Ekle"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="#FFC107"
+            android:textColor="#fff"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
+</ScrollView>
