@@ -73,18 +73,18 @@ dependencies {
 
     // Glide
     implementation(libs.glide)
-    kapt("com.github.bumptech.glide:compiler:4.15.1")
+    kapt("com.github.bumptech.glide:compiler:5.0.7")
 
     // Volley
     implementation("com.android.volley:volley:1.2.1")
 
     // OkHttp & Gson
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
-    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.squareup.okhttp3:okhttp:5.3.2")
+    implementation("com.google.code.gson:gson:2.14.0")
 
     // Retrofit + GSON Converter
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.retrofit2:retrofit:3.0.0")
+    implementation("com.squareup.retrofit2:converter-gson:3.0.0")
 
     // Testler
     testImplementation(libs.junit)
