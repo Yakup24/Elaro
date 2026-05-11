@@ -1,0 +1,25 @@
+version: 2
+updates:
+  - package-ecosystem: nuget
+    directory: /ElaroAPI/ElaroApi
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: Europe/Istanbul
+
+  - package-ecosystem: gradle
+    directory: /ElaroMobil
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:15"
+      timezone: Europe/Istanbul
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:30"
+      timezone: Europe/Istanbul

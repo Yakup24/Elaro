@@ -21,9 +21,20 @@ local.properties
 .gradle/
 build/
 **/build/
+*.jks
+*.keystore
 
 # OS and editor noise
 .DS_Store
 Thumbs.db
 .idea/
 .vscode/
+.vs/
+
+# Test and runtime output
+TestResults/
+*.trx
+*.log
+logs/
+*.db
+*.sqlite

@@ -1,0 +1,88 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  api:
+    name: API build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ElaroAPI/ElaroApi
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore -c Release
+
+  php:
+    name: PHP lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+
+      - name: Lint PHP files
+        run: find ElaroWeb -name "*.php" -print0 | xargs -0 -n1 php -l
+
+  android:
+    name: Android debug build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ElaroMobil
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Grant Gradle wrapper permission
+        run: chmod +x gradlew
+
+      - name: Build debug APK
+        run: ./gradlew assembleDebug
+
+  secret-guard:
+    name: Secret guard
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Block known leaked values
+        shell: bash
+        run: |
+          set -euo pipefail
+          pattern='M3''sl3ki|elaro''admin|elaro\.database\.windows''\.net|Encrypted''Password|elaroapi\.azurewebsites''\.net'
+          if grep -RInE "$pattern" \
+            --exclude-dir=.git \
+            --exclude-dir=bin \
+            --exclude-dir=obj \
+            --exclude-dir=build \
+            .; then
+            echo "Potential leaked secret or private deployment value found."
+            exit 1
+          fi

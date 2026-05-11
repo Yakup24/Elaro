@@ -1,5 +1,7 @@
 ﻿using ElaroApi.Data;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -46,6 +48,38 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(_ =>
+        RateLimitPartition.GetSlidingWindowLimiter("global-api", _ =>
+            new SlidingWindowRateLimiterOptions
+            {
+                PermitLimit = builder.Configuration.GetValue("RateLimiting:ApiPermitLimit", 120),
+                Window = TimeSpan.FromMinutes(1),
+                SegmentsPerWindow = 4,
+                QueueLimit = 0,
+                QueueProcessingOrder = QueueProcessingOrder.OldestFirst
+            }));
+
+    options.AddFixedWindowLimiter("Auth", limiter =>
+    {
+        limiter.PermitLimit = builder.Configuration.GetValue("RateLimiting:AuthPermitLimit", 10);
+        limiter.Window = TimeSpan.FromMinutes(1);
+        limiter.QueueLimit = 0;
+        limiter.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+    });
+
+    options.AddSlidingWindowLimiter("Api", limiter =>
+    {
+        limiter.PermitLimit = builder.Configuration.GetValue("RateLimiting:ApiPermitLimit", 120);
+        limiter.Window = TimeSpan.FromMinutes(1);
+        limiter.SegmentsPerWindow = 4;
+        limiter.QueueLimit = 0;
+        limiter.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+    });
+});
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
@@ -59,6 +93,8 @@ app.Use(async (context, next) =>
     context.Response.Headers.TryAdd("X-Content-Type-Options", "nosniff");
     context.Response.Headers.TryAdd("X-Frame-Options", "DENY");
     context.Response.Headers.TryAdd("Referrer-Policy", "no-referrer");
+    context.Response.Headers.TryAdd("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+    context.Response.Headers.TryAdd("Cross-Origin-Opener-Policy", "same-origin");
     await next();
 });
 
@@ -77,6 +113,14 @@ if (enableSwagger)
 
 app.UseHttpsRedirection();
 app.UseCors("ConfiguredOrigins");
+app.UseRateLimiter();
+
+app.MapGet("/health", () => Results.Ok(new
+{
+    status = "ok",
+    service = "ElaroAPI",
+    utc = DateTimeOffset.UtcNow
+})).RequireRateLimiting("Api");
 
 app.MapControllers();
 

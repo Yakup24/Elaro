@@ -2,6 +2,7 @@
 using ElaroApi.Data;
 using ElaroApi.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
@@ -9,6 +10,7 @@ namespace ElaroApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [EnableRateLimiting("Auth")]
     public class AuthController : ControllerBase
     {
         private readonly AppDbContext _context;

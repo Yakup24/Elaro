@@ -2,17 +2,40 @@
 
 ## Supported Versions
 
-The public repository tracks active development on the `main` branch. Security fixes are applied to the latest public version.
+The public repository tracks active development on `main`. Security fixes are applied to the latest public version.
+
+| Version | Supported |
+|---|---|
+| `main` | Yes |
 
 ## Reporting a Vulnerability
 
-Please do not open a public issue for sensitive security reports.
+Please do not open public issues for sensitive security reports.
 
-Report vulnerabilities by contacting the repository owner through GitHub. Include a short description, affected area, reproduction steps, and any logs or screenshots that help confirm the issue.
+Preferred reporting path:
+
+- Contact the repository owners through GitHub profiles listed in `README.md`.
+- Use a clear title such as `[ELARO-SECURITY] short summary`.
+
+Please include:
+
+- Affected component: API, Web, Mobile, CI, or documentation
+- Reproduction steps
+- Expected and actual behavior
+- Possible impact
+- Logs, screenshots, or proof of concept when safe to share
+
+Expected response:
+
+- Initial acknowledgement: within 72 hours
+- Status update: within 7 days
+- Critical fix target: within 14 days when reproducible
 
 ## Secret Handling
 
-Do not commit database credentials, API keys, publish profiles, `.env` files, or generated user settings. Runtime secrets should be supplied with environment variables such as:
+Never commit database credentials, API keys, tokens, publish profiles, `.env` files, local Android signing keys, or generated user settings.
+
+Runtime secrets should be supplied through environment variables or host-level secret stores:
 
 - `ConnectionStrings__DefaultConnection`
 - `ELARO_DB_HOST`
@@ -20,3 +43,6 @@ Do not commit database credentials, API keys, publish profiles, `.env` files, or
 - `ELARO_DB_USER`
 - `ELARO_DB_PASSWORD`
 - `ELARO_ADMIN_EMAIL`
+- `ELARO_API_BASE_URL`
+
+If a secret is ever committed, rotate it immediately and rewrite public history before making the repository public.

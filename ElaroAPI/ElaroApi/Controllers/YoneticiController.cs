@@ -2,12 +2,14 @@
 using ElaroApi.Data;
 using ElaroApi.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 
 namespace ElaroApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [EnableRateLimiting("Auth")]
     public class YoneticiController : ControllerBase
     {
         private readonly AppDbContext _context;
