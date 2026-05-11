@@ -81,8 +81,8 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
 
     // Retrofit + GSON Converter
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.retrofit2:retrofit:3.0.0")
+    implementation("com.squareup.retrofit2:converter-gson:3.0.0")
 
     // Testler
     testImplementation(libs.junit)
