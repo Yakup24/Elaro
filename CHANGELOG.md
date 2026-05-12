@@ -16,12 +16,14 @@ The format follows Keep a Changelog style and this project uses semantic version
 - Docker Compose local stack for API plus SQL Server.
 - SQL Server schema and seed scripts for portable demos.
 - xUnit test project for API security-critical services.
+- Contribution guide, code of conduct, issue templates and pull request template.
 
 ### Changed
 
 - Android package id moved to `com.yakup24.elaro`.
 - Android networking dependencies are standardized around Retrofit and OkHttp.
 - API and PHP password hashing are aligned around BCrypt-compatible hashes.
+- PHP admin access now uses the `Musteri2.Role = Admin` database role.
 - README is rewritten for public portfolio use.
 
 ### Security

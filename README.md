@@ -60,7 +60,6 @@ ELARO_DB_HOST=
 ELARO_DB_NAME=
 ELARO_DB_USER=
 ELARO_DB_PASSWORD=
-ELARO_ADMIN_EMAIL=
 ```
 
 Android key:
@@ -114,6 +113,7 @@ sqlcmd -S localhost,1433 -U sa -P "<password>" -d Elaro -i database/seed.sql
 - API login and general endpoints are rate limited.
 - CORS is configured with explicit allowed origins.
 - API and PHP password hashes use BCrypt-compatible storage.
+- PHP admin authorization uses the `Musteri2.Role = Admin` database role instead of an environment-selected email.
 - PHP forms use CSRF tokens and hardened session cookie settings.
 - Payment card numbers are masked and CVV values must not be stored permanently.
 - Known leaked deployment values are blocked by the CI secret guard.
@@ -126,6 +126,8 @@ Report vulnerabilities through [SECURITY.md](SECURITY.md).
 - [Deployment](docs/DEPLOYMENT.md)
 - [Release checklist](docs/RELEASE_CHECKLIST.md)
 - [Changelog](CHANGELOG.md)
+- [Contributing](CONTRIBUTING.md)
+- [Code of Conduct](CODE_OF_CONDUCT.md)
 
 ## Authors
 

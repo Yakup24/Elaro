@@ -38,8 +38,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
 
-            $stmt = $conn->prepare("INSERT INTO dbo.[Musteri2] (Ad, Soyad, Eposta, Sifre, KayitTarihi, Cinsiyet, DogumTarihi)
-                                    VALUES (:ad, :soyad, :email, :password, :kayitTarihi, :cinsiyet, :dogumTarihi)");
+            $role = 'Customer';
+            $stmt = $conn->prepare("INSERT INTO dbo.[Musteri2] (Ad, Soyad, Eposta, Sifre, KayitTarihi, Cinsiyet, DogumTarihi, [Role])
+                                    VALUES (:ad, :soyad, :email, :password, :kayitTarihi, :cinsiyet, :dogumTarihi, :role)");
 
             $stmt->bindParam(':ad', $ad);
             $stmt->bindParam(':soyad', $soyad);
@@ -48,6 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->bindParam(':kayitTarihi', $kayitTarihi);
             $stmt->bindParam(':cinsiyet', $cinsiyet);
             $stmt->bindParam(':dogumTarihi', $dogumTarihi);
+            $stmt->bindParam(':role', $role);
 
             $stmt->execute();
 

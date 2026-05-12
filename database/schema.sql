@@ -16,11 +16,31 @@ BEGIN
         Eposta NVARCHAR(200) NOT NULL,
         Telefon NVARCHAR(30) NULL,
         Sifre NVARCHAR(255) NOT NULL,
+        [Role] NVARCHAR(30) NOT NULL CONSTRAINT DF_Musteri2_Role DEFAULT N'Customer',
         KayitTarihi DATETIME2 NULL CONSTRAINT DF_Musteri2_KayitTarihi DEFAULT SYSUTCDATETIME(),
         Cinsiyet NVARCHAR(40) NULL,
         DogumTarihi DATETIME2 NULL,
         CONSTRAINT UQ_Musteri2_Eposta UNIQUE (Eposta)
     );
+END;
+GO
+
+IF COL_LENGTH(N'dbo.Musteri2', N'Role') IS NULL
+BEGIN
+    ALTER TABLE dbo.Musteri2
+        ADD [Role] NVARCHAR(30) NOT NULL
+            CONSTRAINT DF_Musteri2_Role_Existing DEFAULT N'Customer';
+END;
+GO
+
+IF NOT EXISTS (
+    SELECT 1
+    FROM sys.indexes
+    WHERE name = N'IX_Musteri2_Role'
+      AND object_id = OBJECT_ID(N'dbo.Musteri2')
+)
+BEGIN
+    CREATE INDEX IX_Musteri2_Role ON dbo.Musteri2([Role]);
 END;
 GO
 

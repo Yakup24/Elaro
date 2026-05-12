@@ -71,6 +71,9 @@ jobs:
       - name: Build debug APK
         run: ./gradlew assembleDebug
 
+      - name: Run Android unit tests
+        run: ./gradlew test
+
   secret-guard:
     name: Secret guard
     runs-on: ubuntu-latest

@@ -31,3 +31,5 @@ GO
 
 -- Admin/customer users should be created with BCrypt hashes through the app flow
 -- or a private local script. Do not commit real passwords or reusable demo secrets.
+-- Promote a private admin user only after creating it locally:
+-- UPDATE dbo.Musteri2 SET [Role] = N'Admin' WHERE Eposta = N'admin@example.local';

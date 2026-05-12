@@ -8,7 +8,6 @@ if (isset($_SESSION['username'])) {
 
 require_once __DIR__ . '/db.php';
 $conn = $baglanti;
-$adminEmail = getenv('ELARO_ADMIN_EMAIL') ?: 'admin@elaro.com';
 
 // Kayıt mesajı kontrolü
 $mesaj = "";
@@ -23,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST["email"];
     $password = $_POST["password"];
 
-    $stmt = $conn->prepare("SELECT * FROM dbo.[Musteri2] WHERE Eposta = :email");
+    $stmt = $conn->prepare("SELECT MusteriID, Ad, Soyad, Eposta, Sifre, [Role] FROM dbo.[Musteri2] WHERE Eposta = :email");
     $stmt->bindParam(":email", $email);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -36,7 +35,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['username'] = $user["Ad"] . ' ' . $user["Soyad"];
         $_SESSION['giris_tarihi'] = date("Y-m-d H:i:s");
 
-        if (hash_equals(strtolower($adminEmail), strtolower($user["Eposta"]))) {
+        if (strcasecmp((string)($user["Role"] ?? ''), 'Admin') === 0) {
+            $_SESSION["admin_id"] = $user["MusteriID"];
+            $_SESSION["admin_eposta"] = $user["Eposta"];
+            $_SESSION["admin_role"] = "Admin";
+            $_SESSION["admin_kadi"] = trim(($user["Ad"] ?? '') . ' ' . ($user["Soyad"] ?? ''));
             header("Location: admin/panel.php");
         } else {
             header("Location: index.php");

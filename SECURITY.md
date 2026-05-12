@@ -42,7 +42,6 @@ Runtime secrets should be supplied through environment variables or host-level s
 - `ELARO_DB_NAME`
 - `ELARO_DB_USER`
 - `ELARO_DB_PASSWORD`
-- `ELARO_ADMIN_EMAIL`
 - `ELARO_API_BASE_URL`
 
 If a secret is ever committed, rotate it immediately and rewrite public history before making the repository public.
