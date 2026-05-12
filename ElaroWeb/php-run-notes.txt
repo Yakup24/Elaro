@@ -1,0 +1,18 @@
+# ElaroWeb Local Notes
+
+Run the PHP web app from the repository root with:
+
+```bash
+php -S localhost:8080 -t ElaroWeb
+```
+
+The web layer expects SQL Server connection values from environment variables:
+
+```dotenv
+ELARO_DB_HOST=localhost
+ELARO_DB_NAME=Elaro
+ELARO_DB_USER=
+ELARO_DB_PASSWORD=
+```
+
+Product image URLs used by the demo pages are stored directly in the PHP page data for now. Move them into seed data or a media table before production use.

@@ -155,7 +155,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="password" id="password" name="password" required>
             <button type="submit">Giriş</button>
         </form>
-        <p><a href="kayıt.php">Kayıt Ol</a></p>
+        <p><a href="kayit.php">Kayıt Ol</a></p>
         <p><a href="index.php">Anasayfa</a></p>
     </div>
 </body>

@@ -4,6 +4,13 @@ All notable changes to this project are documented here.
 
 The format follows Keep a Changelog style and this project uses semantic versioning for public releases.
 
+## [0.2.1] - 2026-05-12
+
+### Changed
+
+- Renamed PHP web filenames to ASCII-safe route names for Linux hosting and cleaner portfolio review.
+- Updated PHP menu and login links to point at the ASCII-safe filenames.
+
 ## [0.2.0] - 2026-05-12
 
 ### Added

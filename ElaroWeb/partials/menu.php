@@ -4,9 +4,9 @@
         <li class="menu-item"><a href="kadin.php">Kadın</a>
             <ul class="submenu">
                 <li class="submenu-item"><a href="elbiseler.php">Elbiseler</a></li>
-                <li class="submenu-item"><a href="ayakkabılar.php">Ayakkabılar</a></li>
+                <li class="submenu-item"><a href="ayakkabilar.php">Ayakkabılar</a></li>
                 <li class="submenu-item"><a href="cantalar.php">Çantalar</a></li>
-                <li class="submenu-item"><a href="Aksesuarlar.php">Aksesuarlar</a></li>
+                <li class="submenu-item"><a href="aksesuarlar.php">Aksesuarlar</a></li>
             </ul>
         </li>
         <li class="menu-item"><a href="erkek.php">Erkek</a>
@@ -14,27 +14,27 @@
                 <li class="submenu-item"><a href="gomlek.php">Gömlek</a></li>
                 <li class="submenu-item"><a href="pantolon.php">Pantolon</a></li>
                 <li class="submenu-item"><a href="ceket.php">Ceket</a></li>
-                <li class="submenu-item"><a href="ayakkabılar2.php">Ayakkabılar</a></li>
+                <li class="submenu-item"><a href="ayakkabilar2.php">Ayakkabılar</a></li>
             </ul>
         </li>
         <li class="menu-item has-submenu">
             <a href="cocuk.php">Çocuk</a>
             <ul class="submenu">
                 <li class="submenu-item has-subcategory">
-                    <a href="kızcocuk.php">Kız Çocuk</a>
+                    <a href="kiz-cocuk.php">Kız Çocuk</a>
                     <div class="subcategory">
-                        <a href="KıyafetlerKÇ.php">Kıyafetler</a>
-                        <a href="AyakkabılarKÇ.php">Ayakkabılar</a>
-                        <a href="AksesuarlarKÇ.php">Aksesuarlar</a>
+                        <a href="kiyafetler-kc.php">Kıyafetler</a>
+                        <a href="ayakkabilar-kc.php">Ayakkabılar</a>
+                        <a href="aksesuarlar-kc.php">Aksesuarlar</a>
 
                     </div>
                 </li>
                 <li class="submenu-item has-subcategory">
                     <a href="erkekcocuk.php">Erkek Çocuk</a>
                     <div class="subcategory">
-                        <a href="KıyafetlerEÇ.php">Kıyafetler</a>
-                        <a href="AyakkabılarEÇ.php">Ayakkabılar</a>
-                        <a href="AksesuarlarEÇ.php">Aksesuarlar</a>
+                        <a href="kiyafetler-ec.php">Kıyafetler</a>
+                        <a href="ayakkabilar-ec.php">Ayakkabılar</a>
+                        <a href="aksesuarlar-ec.php">Aksesuarlar</a>
 
                     </div>
                 </li>
@@ -50,7 +50,7 @@
                     <li class="submenu-item"><a href="cikis.php">Çıkış Yap</a></li>
                 <?php else: ?>
                     <li class="submenu-item"><a href="login.php">Giriş Yap</a></li>
-                    <li class="submenu-item"><a href="kayıt.php">Kayıt Ol</a></li>
+                    <li class="submenu-item"><a href="kayit.php">Kayıt Ol</a></li>
                 <?php endif; ?>
             </ul>
         </li>

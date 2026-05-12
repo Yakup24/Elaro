@@ -117,6 +117,7 @@ sqlcmd -S localhost,1433 -U sa -P "<password>" -d Elaro -i database/seed.sql
 - PHP forms use CSRF tokens and hardened session cookie settings.
 - Payment card numbers are masked and CVV values must not be stored permanently.
 - Known leaked deployment values are blocked by the CI secret guard.
+- PHP route filenames are ASCII-safe for cross-platform deploys.
 
 Report vulnerabilities through [SECURITY.md](SECURITY.md).
 
