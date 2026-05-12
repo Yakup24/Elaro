@@ -9,11 +9,11 @@ on:
 
 jobs:
   api:
-    name: API build
+    name: API build and test
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ElaroAPI/ElaroApi
+        working-directory: ElaroAPI
     steps:
       - uses: actions/checkout@v6
 
@@ -23,10 +23,13 @@ jobs:
           dotnet-version: "8.0.x"
 
       - name: Restore
-        run: dotnet restore
+        run: dotnet restore ElaroApi.sln
 
       - name: Build
-        run: dotnet build --no-restore -c Release
+        run: dotnet build ElaroApi.sln --no-restore -c Release
+
+      - name: Test
+        run: dotnet test ElaroApi.sln --no-build -c Release
 
   php:
     name: PHP lint

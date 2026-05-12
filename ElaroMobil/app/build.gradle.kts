@@ -15,11 +15,11 @@ val apiBaseUrl = providers.gradleProperty("ELARO_API_BASE_URL")
 val normalizedApiBaseUrl = if (apiBaseUrl.endsWith("/")) apiBaseUrl else "$apiBaseUrl/"
 
 android {
-    namespace = "com.calisma.e_ticaretsitesison"
+    namespace = "com.yakup24.elaro"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.calisma.e_ticaretsitesison"
+        applicationId = "com.yakup24.elaro"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
@@ -74,9 +74,6 @@ dependencies {
     // Glide
     implementation(libs.glide)
     kapt("com.github.bumptech.glide:compiler:5.0.7")
-
-    // Volley
-    implementation("com.android.volley:volley:1.2.1")
 
     // OkHttp & Gson
     implementation("com.squareup.okhttp3:okhttp:5.3.2")

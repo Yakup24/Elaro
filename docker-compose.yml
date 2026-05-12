@@ -1,0 +1,34 @@
+name: elaro
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "${ELARO_SQL_PASSWORD:-ChangeMe_12345!}"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+
+  api:
+    build:
+      context: .
+      dockerfile: ElaroAPI/ElaroApi/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__DefaultConnection: "Server=sqlserver,1433;Database=Elaro;User ID=sa;Password=${ELARO_SQL_PASSWORD:-ChangeMe_12345!};Encrypt=False;TrustServerCertificate=True;"
+      Jwt__Issuer: Elaro
+      Jwt__Audience: ElaroClients
+      Jwt__Key: "${JWT_KEY:-development_only_jwt_key_32_chars!!}"
+      Jwt__AccessTokenMinutes: "60"
+      Cors__AllowedOrigins__0: http://localhost:8080
+      Cors__AllowedOrigins__1: http://localhost:5218
+    ports:
+      - "5218:8080"
+    depends_on:
+      - sqlserver
+
+volumes:
+  sqlserver-data:

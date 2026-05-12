@@ -12,6 +12,18 @@ updates:
       time: "06:00"
       timezone: Europe/Istanbul
 
+  - package-ecosystem: nuget
+    directory: /ElaroAPI/ElaroApi.Tests
+    groups:
+      dotnet-test-dependencies:
+        patterns:
+          - "*"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:05"
+      timezone: Europe/Istanbul
+
   - package-ecosystem: gradle
     directory: /ElaroMobil
     ignore:

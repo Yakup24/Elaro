@@ -15,7 +15,6 @@ namespace ElaroApi.Controllers
     public class AuthController : ControllerBase
     {
         private readonly AppDbContext _context;
-        private readonly PasswordHasher<Musteri> _passwordHasher = new();
         private readonly JwtTokenService _jwtTokenService;
 
         public AuthController(AppDbContext context, JwtTokenService jwtTokenService)
@@ -50,7 +49,7 @@ namespace ElaroApi.Controllers
                     KayitTarihi = DateTime.Now
                 };
 
-                musteri.Sifre = _passwordHasher.HashPassword(musteri, istek.Sifre);
+                musteri.Sifre = BCrypt.Net.BCrypt.HashPassword(istek.Sifre);
 
                 _context.Musteriler.Add(musteri);
                 await _context.SaveChangesAsync();
@@ -79,14 +78,14 @@ namespace ElaroApi.Controllers
                 if (kullanici == null)
                     return Unauthorized(new { message = "Geçersiz e-posta veya şifre." });
 
-                var dogrulama = _passwordHasher.VerifyHashedPassword(kullanici, kullanici.Sifre, istek.Sifre);
+                var passwordCheck = VerifyPassword(kullanici, istek.Sifre);
 
-                if (dogrulama == PasswordVerificationResult.Failed)
+                if (!passwordCheck.IsValid)
                     return Unauthorized(new { message = "Geçersiz e-posta veya şifre." });
 
-                if (dogrulama == PasswordVerificationResult.SuccessRehashNeeded)
+                if (passwordCheck.RequiresRehash)
                 {
-                    kullanici.Sifre = _passwordHasher.HashPassword(kullanici, istek.Sifre);
+                    kullanici.Sifre = BCrypt.Net.BCrypt.HashPassword(istek.Sifre);
                     await _context.SaveChangesAsync();
                 }
 
@@ -111,6 +110,32 @@ namespace ElaroApi.Controllers
                 });
             }
         }
+
+        private static PasswordCheckResult VerifyPassword(Musteri kullanici, string password)
+        {
+            try
+            {
+                if (BCrypt.Net.BCrypt.Verify(password, kullanici.Sifre))
+                {
+                    return new PasswordCheckResult(true, false);
+                }
+            }
+            catch
+            {
+            }
+
+            var legacyHasher = new PasswordHasher<Musteri>();
+            var legacyResult = legacyHasher.VerifyHashedPassword(kullanici, kullanici.Sifre, password);
+
+            return legacyResult switch
+            {
+                PasswordVerificationResult.Success => new PasswordCheckResult(true, true),
+                PasswordVerificationResult.SuccessRehashNeeded => new PasswordCheckResult(true, true),
+                _ => new PasswordCheckResult(false, false)
+            };
+        }
+
+        private sealed record PasswordCheckResult(bool IsValid, bool RequiresRehash);
     }
 
     public class KayitIstegi

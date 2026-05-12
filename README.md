@@ -2,42 +2,47 @@
 
 [![CI](https://github.com/Yakup24/Elaro/actions/workflows/ci.yml/badge.svg)](https://github.com/Yakup24/Elaro/actions/workflows/ci.yml)
 
-Elaro; ASP.NET Core API, PHP web arayuzu ve Android istemcisinden olusan bir e-ticaret monorepo'sudur. Proje, portfoy ve gelistirme amacli olarak guvenli varsayilanlar, ortam degiskeni tabanli secret yonetimi ve temel CI kontrolleriyle hazirlanmistir.
+Elaro is an e-commerce monorepo with an ASP.NET Core API, a PHP web/admin layer, and an Android client. The repository is prepared for public portfolio use with environment-based configuration, JWT authentication, CSRF protection, CI checks, and MIT licensing.
 
-## Bilesenler
+## Components
 
-| Bilesen | Teknoloji | Konum |
+| Component | Stack | Location |
 |---|---|---|
 | API | ASP.NET Core 8, EF Core, SQL Server | `ElaroAPI/ElaroApi` |
+| API tests | xUnit | `ElaroAPI/ElaroApi.Tests` |
 | Web | PHP, PDO `sqlsrv` | `ElaroWeb` |
-| Mobil | Android, Kotlin, Retrofit/OkHttp | `ElaroMobil` |
+| Mobile | Android, Kotlin, Retrofit/OkHttp | `ElaroMobil` |
+| Docs | Architecture, deployment, release notes | `docs` |
 
-## Dizin Yapisi
+## Repository Layout
 
 ```text
 Elaro/
-├─ ElaroAPI/      # REST API
-├─ ElaroWeb/      # PHP web uygulamasi ve admin panel
-├─ ElaroMobil/    # Android istemcisi
-├─ docs/          # Mimari ve release notlari
-├─ .github/       # CI, Dependabot ve repo sahipligi
-├─ .env.example
-├─ LICENSE
-└─ SECURITY.md
+|-- ElaroAPI/       # ASP.NET Core REST API and xUnit tests
+|-- ElaroWeb/       # PHP web app and admin panel
+|-- ElaroMobil/     # Android client
+|-- database/       # SQL Server schema and seed scripts
+|-- docs/           # Architecture, deployment and release docs
+|-- .github/        # CI, Dependabot and ownership config
+|-- docker-compose.yml
+|-- .env.example
+|-- LICENSE
+`-- SECURITY.md
 ```
 
-## Gereksinimler
+## Requirements
 
 - .NET SDK 8
-- PHP 8.2+ ve `pdo_sqlsrv` / `sqlsrv` eklentileri
-- SQL Server veya Azure SQL
-- Android Studio + JDK 17
+- PHP 8.2+ with `pdo_sqlsrv` / `sqlsrv`
+- SQL Server 2022 or Azure SQL
+- Android Studio with JDK 17
+- Docker Desktop, optional
 
-## Ortam Degiskenleri
+## Configuration
 
-Secret degerleri repoya yazilmaz. Baslangic icin `.env.example` dosyasini referans alin.
+Secrets must stay outside the repository. Use `.env.example` as the key list and provide real values through environment variables, user secrets, GitHub Secrets, or your hosting provider.
 
-API icin:
+API keys:
 
 ```bash
 ConnectionStrings__DefaultConnection="Server=...;Database=...;User ID=...;Password=...;Encrypt=True;TrustServerCertificate=False;"
@@ -48,7 +53,7 @@ Jwt__AccessTokenMinutes="60"
 Cors__AllowedOrigins__0="http://localhost"
 ```
 
-PHP web icin:
+PHP keys:
 
 ```bash
 ELARO_DB_HOST=
@@ -58,69 +63,74 @@ ELARO_DB_PASSWORD=
 ELARO_ADMIN_EMAIL=
 ```
 
-Android icin:
+Android key:
 
 ```bash
 ELARO_API_BASE_URL=https://your-api.example.com/
 ```
 
-## Calistirma
+## Quick Start
 
-API:
+Restore and test the API:
 
 ```bash
 dotnet restore ElaroAPI/ElaroApi.sln
+dotnet test ElaroAPI/ElaroApi.sln -c Release
 dotnet run --project ElaroAPI/ElaroApi
 ```
 
-PHP web:
+Run the PHP web layer:
 
 ```bash
 php -S localhost:8080 -t ElaroWeb
 ```
 
-Android:
+Build the Android app:
 
 ```bash
 cd ElaroMobil
 ./gradlew assembleDebug
 ```
 
-Windows icin:
-
-```powershell
-cd ElaroMobil
-.\gradlew.bat assembleDebug
-```
-
-## Dogrulama
+Start the local Docker stack:
 
 ```bash
-dotnet build ElaroAPI/ElaroApi.sln --no-restore
+docker compose up --build
 ```
 
-CI pipeline'i API build, PHP lint, Android debug build ve secret guard kontrollerini calistirir.
+## Database
 
-## Guvenlik Notlari
+The portable SQL Server bootstrap files live in `database/`.
 
-- Veritabani credential'lari ve publish profile dosyalari repoda tutulmaz.
-- API CORS origin'leri whitelist olarak konfigure edilir.
-- API login endpoint'leri JWT access token uretir; adres, siparis ve odeme endpoint'leri token ile korunur.
-- API auth endpoint'leri ve genel endpoint'ler icin rate limiting vardir.
-- PHP tarafinda sifreler `password_hash` ile saklanir; admin ve kullanici formlarinda CSRF token kullanilir.
-- Kart/CVV bilgisi kalici olarak saklanmaz; kart numarasi maskelenir.
+```bash
+sqlcmd -S localhost,1433 -U sa -P "<password>" -i database/schema.sql
+sqlcmd -S localhost,1433 -U sa -P "<password>" -d Elaro -i database/seed.sql
+```
 
-Guvenlik acigi bildirmek icin [SECURITY.md](SECURITY.md) dosyasini takip edin.
+## Security
 
-## Dokumantasyon
+- Database credentials, JWT keys, publish profiles, keystores and `.env` files are ignored.
+- API authentication uses JWT bearer tokens and role claims for customer/admin access.
+- API login and general endpoints are rate limited.
+- CORS is configured with explicit allowed origins.
+- API and PHP password hashes use BCrypt-compatible storage.
+- PHP forms use CSRF tokens and hardened session cookie settings.
+- Payment card numbers are masked and CVV values must not be stored permanently.
+- Known leaked deployment values are blocked by the CI secret guard.
 
-- [Mimari](docs/ARCHITECTURE.md)
+Report vulnerabilities through [SECURITY.md](SECURITY.md).
+
+## Documentation
+
+- [Architecture](docs/ARCHITECTURE.md)
+- [Deployment](docs/DEPLOYMENT.md)
 - [Release checklist](docs/RELEASE_CHECKLIST.md)
+- [Changelog](CHANGELOG.md)
 
 ## Authors
 
-- [Yakup Eşki](https://github.com/Yakup24)
-- [Berat Kuruçay](https://github.com/BeratKurucay)
+- [Yakup Eski](https://github.com/Yakup24)
+- [Berat Kurucay](https://github.com/BeratKurucay)
 
 ## License
 

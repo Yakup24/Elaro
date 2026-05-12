@@ -14,7 +14,6 @@ namespace ElaroApi.Controllers
     public class YoneticiController : ControllerBase
     {
         private readonly AppDbContext _context;
-        private readonly PasswordHasher<Yonetici> _passwordHasher = new();
         private readonly JwtTokenService _jwtTokenService;
 
         public YoneticiController(AppDbContext context, JwtTokenService jwtTokenService)
@@ -40,14 +39,14 @@ namespace ElaroApi.Controllers
             if (yonetici == null)
                 return Unauthorized(new { message = "Geçersiz kullanıcı adı veya şifre." });
 
-            var dogrulama = _passwordHasher.VerifyHashedPassword(yonetici, yonetici.Sifre, request.Sifre);
+            var passwordCheck = VerifyPassword(yonetici, request.Sifre);
 
-            if (dogrulama == PasswordVerificationResult.Failed)
+            if (!passwordCheck.IsValid)
                 return Unauthorized(new { message = "Geçersiz kullanıcı adı veya şifre." });
 
-            if (dogrulama == PasswordVerificationResult.SuccessRehashNeeded)
+            if (passwordCheck.RequiresRehash)
             {
-                yonetici.Sifre = _passwordHasher.HashPassword(yonetici, request.Sifre);
+                yonetici.Sifre = BCrypt.Net.BCrypt.HashPassword(request.Sifre);
                 await _context.SaveChangesAsync();
             }
 
@@ -62,6 +61,32 @@ namespace ElaroApi.Controllers
                 expiresAt = token.ExpiresAt
             });
         }
+
+        private static PasswordCheckResult VerifyPassword(Yonetici yonetici, string password)
+        {
+            try
+            {
+                if (BCrypt.Net.BCrypt.Verify(password, yonetici.Sifre))
+                {
+                    return new PasswordCheckResult(true, false);
+                }
+            }
+            catch
+            {
+            }
+
+            var legacyHasher = new PasswordHasher<Yonetici>();
+            var legacyResult = legacyHasher.VerifyHashedPassword(yonetici, yonetici.Sifre, password);
+
+            return legacyResult switch
+            {
+                PasswordVerificationResult.Success => new PasswordCheckResult(true, true),
+                PasswordVerificationResult.SuccessRehashNeeded => new PasswordCheckResult(true, true),
+                _ => new PasswordCheckResult(false, false)
+            };
+        }
+
+        private sealed record PasswordCheckResult(bool IsValid, bool RequiresRehash);
     }
 
     public class YoneticiLoginRequest
