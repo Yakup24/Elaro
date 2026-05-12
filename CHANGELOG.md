@@ -4,6 +4,20 @@ All notable changes to this project are documented here.
 
 The format follows Keep a Changelog style and this project uses semantic versioning for public releases.
 
+## [0.2.2] - 2026-05-12
+
+### Added
+
+- API integration test coverage for `/health` and security response headers.
+- CI-uploaded API test results and coverage artifacts.
+- Tag-driven GitHub Release workflow for public release pages.
+- Versioned release notes under `docs/releases/`.
+
+### Changed
+
+- API JWT tests now cover both customer and admin claims.
+- JWT signing key validation is covered by a dedicated regression test.
+
 ## [0.2.1] - 2026-05-12
 
 ### Changed

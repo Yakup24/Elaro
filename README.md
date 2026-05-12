@@ -126,6 +126,7 @@ Report vulnerabilities through [SECURITY.md](SECURITY.md).
 - [Architecture](docs/ARCHITECTURE.md)
 - [Deployment](docs/DEPLOYMENT.md)
 - [Release checklist](docs/RELEASE_CHECKLIST.md)
+- [Latest release notes](docs/releases/v0.2.2.md)
 - [Changelog](CHANGELOG.md)
 - [Contributing](CONTRIBUTING.md)
 - [Code of Conduct](CODE_OF_CONDUCT.md)
