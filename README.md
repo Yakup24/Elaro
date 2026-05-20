@@ -2,17 +2,77 @@
 
 [![CI](https://github.com/Yakup24/Elaro/actions/workflows/ci.yml/badge.svg)](https://github.com/Yakup24/Elaro/actions/workflows/ci.yml)
 
-Elaro is an e-commerce monorepo with an ASP.NET Core API, a PHP web/admin layer, and an Android client. The repository is prepared for public portfolio use with environment-based configuration, JWT authentication, CSRF protection, CI checks, and MIT licensing.
+**Elaro** is a portfolio-ready, multi-client e-commerce monorepo that combines an ASP.NET Core API, a PHP web/admin layer, an Android Kotlin client, SQL Server database scripts, CI quality gates, and production-oriented security documentation.
+
+The project is designed to demonstrate more than basic CRUD. It shows how an e-commerce system can be split into independently buildable runtimes while keeping authentication, database access, deployment configuration, secret handling, and release readiness visible in one repository.
+
+## Problem
+
+Small e-commerce projects often become hard to maintain when backend, web admin, mobile client, database scripts, and deployment notes are scattered across separate folders or personal machines. That creates common risks:
+
+- API, web, and mobile clients drift from each other.
+- Database schema changes are not versioned clearly.
+- Secrets or deployment values accidentally leak into source control.
+- Admin authorization is implemented with fragile hard-coded values.
+- Payment and session handling are not documented.
+- CI only checks one layer while other layers silently break.
+
+## Solution
+
+Elaro keeps the core delivery surfaces in one monorepo:
+
+- ASP.NET Core 8 API for REST endpoints, JWT authentication, EF Core and SQL Server integration
+- PHP web/admin layer for storefront and operational screens
+- Android Kotlin client for mobile shopping flows
+- SQL Server schema and seed scripts for repeatable setup
+- Docker and environment examples for local/deployment preparation
+- CI pipeline covering API, PHP, Android and secret scanning
+- Documentation for architecture, deployment, release and quality strategy
+
+## Core Features
+
+- Customer registration and login
+- JWT-based API authentication
+- Role-based admin access
+- Product, cart, order and profile-oriented e-commerce flow
+- PHP storefront and admin panel
+- Android client with Retrofit/OkHttp integration
+- SQL Server / Azure SQL compatible database layer
+- Environment-based configuration
+- CSRF protection for PHP forms
+- Hardened PHP session cookie settings
+- BCrypt-compatible password hashing
+- Masked payment card handling guidance
+- CI checks for API tests, PHP syntax, Android build/tests and leaked value guard
+
+## Architecture
+
+```mermaid
+flowchart TD
+    Customer["Customer / Browser"] --> Web["PHP Web + Admin Layer"]
+    MobileUser["Mobile User"] --> Android["Android Kotlin Client"]
+    Web --> Api["ASP.NET Core 8 REST API"]
+    Android --> Api
+    Api --> Db["SQL Server / Azure SQL"]
+    Web --> Db
+    CI["GitHub Actions"] --> Api
+    CI --> Web
+    CI --> Android
+```
+
+More detail is available in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ## Components
 
-| Component | Stack | Location |
-|---|---|---|
-| API | ASP.NET Core 8, EF Core, SQL Server | `ElaroAPI/ElaroApi` |
-| API tests | xUnit | `ElaroAPI/ElaroApi.Tests` |
-| Web | PHP, PDO `sqlsrv` | `ElaroWeb` |
-| Mobile | Android, Kotlin, Retrofit/OkHttp | `ElaroMobil` |
-| Docs | Architecture, deployment, release notes | `docs` |
+| Component | Stack | Location | Responsibility |
+|---|---|---|---|
+| API | ASP.NET Core 8, EF Core, SQL Server | `ElaroAPI/ElaroApi` | REST API, auth, business operations |
+| API tests | xUnit | `ElaroAPI/ElaroApi.Tests` | Automated backend checks |
+| Web/Admin | PHP, PDO `sqlsrv` | `ElaroWeb` | Storefront and admin workflows |
+| Mobile | Android, Kotlin, Retrofit/OkHttp | `ElaroMobil` | Mobile client experience |
+| Database | SQL Server scripts | `database` | Schema and seed bootstrap |
+| CI/CD | GitHub Actions | `.github/workflows` | Build, test, lint and secret guard |
+| Docs | Markdown | `docs` | Architecture, deployment and release process |
 
 ## Repository Layout
 
@@ -22,7 +82,7 @@ Elaro/
 |-- ElaroWeb/       # PHP web app and admin panel
 |-- ElaroMobil/     # Android client
 |-- database/       # SQL Server schema and seed scripts
-|-- docs/           # Architecture, deployment and release docs
+|-- docs/           # Architecture, deployment, quality and release docs
 |-- .github/        # CI, Dependabot and ownership config
 |-- docker-compose.yml
 |-- .env.example
@@ -106,6 +166,19 @@ sqlcmd -S localhost,1433 -U sa -P "<password>" -i database/schema.sql
 sqlcmd -S localhost,1433 -U sa -P "<password>" -d Elaro -i database/seed.sql
 ```
 
+## Quality Gates
+
+The CI workflow is designed to catch failures across the monorepo, not only one runtime:
+
+- API restore, build and xUnit test execution
+- API test result artifact upload
+- PHP syntax linting
+- Android debug build
+- Android unit tests
+- Secret guard for known leaked values and private deployment strings
+
+See [docs/QUALITY_STRATEGY.md](docs/QUALITY_STRATEGY.md) for the full testing and quality approach.
+
 ## Security
 
 - Database credentials, JWT keys, publish profiles, keystores and `.env` files are ignored.
@@ -124,12 +197,24 @@ Report vulnerabilities through [SECURITY.md](SECURITY.md).
 ## Documentation
 
 - [Architecture](docs/ARCHITECTURE.md)
+- [Quality strategy](docs/QUALITY_STRATEGY.md)
+- [Operations runbook](docs/RUNBOOK.md)
 - [Deployment](docs/DEPLOYMENT.md)
 - [Release checklist](docs/RELEASE_CHECKLIST.md)
 - [Latest release notes](docs/releases/v0.2.2.md)
 - [Changelog](CHANGELOG.md)
 - [Contributing](CONTRIBUTING.md)
 - [Code of Conduct](CODE_OF_CONDUCT.md)
+
+## Roadmap
+
+- Add OpenAPI/Swagger contract snapshots
+- Add API integration tests with disposable SQL Server container
+- Add PHP form-level smoke tests
+- Add Android UI smoke tests
+- Add structured application logs and correlation IDs
+- Add order lifecycle audit trail
+- Add payment provider abstraction for sandbox integrations
 
 ## Authors
 
