@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.yakup24.elaro.R
 import com.yakup24.elaro.models.LoginRequest
 import com.yakup24.elaro.models.LoginResponse
-import com.yakup24.elaro.network.ApiService
+import com.yakup24.elaro.ui.network.ApiService
 import com.yakup24.elaro.ui.network.RetrofitClient
 import com.yakup24.elaro.ui.network.SessionManager
 import retrofit2.Call

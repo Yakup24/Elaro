@@ -1,4 +1,4 @@
-package com.yakup24.elaro.network
+package com.yakup24.elaro.ui.network
 
 import retrofit2.Call
 import retrofit2.http.*
@@ -12,6 +12,9 @@ interface ApiService {
 
     @GET("api/Urun")
     fun getAllProducts(): Call<List<Urun>>
+
+    @GET("api/product/all")
+    suspend fun getAllProductsSuspend(): List<Urun>
 
     @POST("api/Auth/register")
     fun registerUser(@Body musteri: Musteri): Call<Void>

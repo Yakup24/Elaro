@@ -1,22 +1,40 @@
 name: elaro
 
+networks:
+  elaro_network:
+    driver: bridge
+
 services:
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
+    restart: unless-stopped
     environment:
       ACCEPT_EULA: "Y"
       MSSQL_SA_PASSWORD: "${ELARO_SQL_PASSWORD:-ChangeMe_12345!}"
-    ports:
-      - "1433:1433"
+    expose:
+      - "1433"
+    networks:
+      - elaro_network
     volumes:
       - sqlserver-data:/var/opt/mssql
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "(/opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -Q \"SELECT 1\" || /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -Q \"SELECT 1\")"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
 
   api:
     build:
       context: .
       dockerfile: ElaroAPI/ElaroApi/Dockerfile
+    restart: unless-stopped
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_ENVIRONMENT: Production
       ASPNETCORE_URLS: http://+:8080
       ConnectionStrings__DefaultConnection: "Server=sqlserver,1433;Database=Elaro;User ID=sa;Password=${ELARO_SQL_PASSWORD:-ChangeMe_12345!};Encrypt=False;TrustServerCertificate=True;"
       Jwt__Issuer: Elaro
@@ -27,8 +45,16 @@ services:
       Cors__AllowedOrigins__1: http://localhost:5218
     ports:
       - "5218:8080"
+    networks:
+      - elaro_network
     depends_on:
-      - sqlserver
+      sqlserver:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 512M
 
 volumes:
   sqlserver-data:

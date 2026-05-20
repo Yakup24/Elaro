@@ -8,7 +8,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.yakup24.elaro.R
 import com.yakup24.elaro.models.Musteri
-import com.yakup24.elaro.network.ApiService
+import com.yakup24.elaro.ui.network.ApiService
 import com.yakup24.elaro.ui.network.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback

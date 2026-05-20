@@ -43,6 +43,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSingleton<JwtTokenService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new()

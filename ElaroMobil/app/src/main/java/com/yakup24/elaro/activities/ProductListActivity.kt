@@ -4,18 +4,25 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yakup24.elaro.ProductAdapter
 import com.yakup24.elaro.R
 import com.yakup24.elaro.models.Urun
-import com.yakup24.elaro.network.ApiService
+import com.yakup24.elaro.ui.network.ApiService
 import com.yakup24.elaro.ui.network.RetrofitClient
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.yakup24.elaro.viewmodels.ProductUiState
+import com.yakup24.elaro.viewmodels.ProductViewModel
+import com.yakup24.elaro.viewmodels.ProductViewModelFactory
+import kotlinx.coroutines.launch
 
 class ProductListActivity : AppCompatActivity() {
 
@@ -27,6 +34,7 @@ class ProductListActivity : AppCompatActivity() {
 
     private lateinit var productAdapter: ProductAdapter
     private var allUruns = listOf<Urun>()
+    private lateinit var viewModel: ProductViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,51 +58,56 @@ class ProductListActivity : AppCompatActivity() {
         )
         rvProducts.adapter = productAdapter
 
+        val apiService = RetrofitClient.instance.create(ApiService::class.java)
+        viewModel = ViewModelProvider(
+            this,
+            ProductViewModelFactory(apiService)
+        )[ProductViewModel::class.java]
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect { state ->
+                    when (state) {
+                        ProductUiState.Loading -> Unit
+                        is ProductUiState.Success -> {
+                            allUruns = state.products
+                            applyCurrentFilters()
+                        }
+                        is ProductUiState.Error -> {
+                            Toast.makeText(this@ProductListActivity, state.message, Toast.LENGTH_LONG).show()
+                        }
+                    }
+                }
+            }
+        }
+
         btnApplyFilter.setOnClickListener {
-            applyFilter()
+            applyCurrentFilters()
         }
 
         etSearch.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                val query = s.toString().lowercase()
-                val filtered = allUruns.filter { it.ad?.lowercase()?.contains(query) == true }
-                productAdapter.updateList(filtered)
+                applyCurrentFilters()
             }
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
-
-        loadProductsFromApi()
-    }
-
-    private fun loadProductsFromApi() {
-        val apiService = RetrofitClient.instance.create(ApiService::class.java)
-        apiService.getAllProducts().enqueue(object : Callback<List<Urun>> {
-            override fun onResponse(call: Call<List<Urun>>, response: Response<List<Urun>>) {
-                if (response.isSuccessful && response.body() != null) {
-                    allUruns = response.body()!!
-                    productAdapter.updateList(allUruns)
-                } else {
-                    Toast.makeText(this@ProductListActivity, "Ürünler getirilemedi", Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onFailure(call: Call<List<Urun>>, t: Throwable) {
-                Toast.makeText(this@ProductListActivity, "Sunucu hatası: ${t.message}", Toast.LENGTH_LONG).show()
-            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
         })
     }
 
-    private fun applyFilter() {
+    private fun applyCurrentFilters() {
+        val query = etSearch.text.toString().trim().lowercase()
         val min = etMinPrice.text.toString().toDoubleOrNull()
         val max = etMaxPrice.text.toString().toDoubleOrNull()
 
         val filtered = allUruns.filter { urun ->
+            val matchesSearch = query.isEmpty() || urun.ad?.lowercase()?.contains(query) == true
             val fiyat = urun.fiyat ?: 0.0
-            (min == null || fiyat >= min) && (max == null || fiyat <= max)
-        }
+            val matchesMin = min == null || fiyat >= min
+            val matchesMax = max == null || fiyat <= max
 
+            matchesSearch && matchesMin && matchesMax
+        }
 
         productAdapter.updateList(filtered)
     }

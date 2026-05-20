@@ -26,6 +26,7 @@ flowchart TD
 - Runtime: ASP.NET Core 8
 - Data access: EF Core SQL Server provider
 - Responsibility: REST endpoints, authentication, authorization-aware business operations, API-facing validation
+- Product boundary: controllers depend on `IProductService`; EF Core queries are isolated inside `ProductService` and projected through DTOs before leaving the API
 - Security defaults: environment-based connection string, JWT bearer authentication, role claims, configured CORS origins, rate limiting, secure response headers, Swagger disabled in production by default
 - Tests: `ElaroAPI/ElaroApi.Tests`
 
@@ -44,6 +45,7 @@ flowchart TD
 - Package id: `com.yakup24.elaro`
 - Network configuration: API base URL is injected through `ELARO_API_BASE_URL` or Gradle property
 - Networking: Retrofit and OkHttp
+- Product list flow: `ProductViewModel` uses coroutines and `StateFlow`; activities observe UI state instead of doing product fetch work directly on the screen layer
 - Responsibility: mobile shopping experience and API consumption
 
 ### Database
