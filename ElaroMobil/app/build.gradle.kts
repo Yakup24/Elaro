@@ -1,9 +1,11 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
 
     // Bu satırı değiştirdik:
     id("kotlin-parcelize") // ✅ alias kullanmadan, doğru kullanım
+    kotlin("kapt")
 }
 
 val apiBaseUrl = providers.gradleProperty("ELARO_API_BASE_URL")
@@ -14,7 +16,7 @@ val normalizedApiBaseUrl = if (apiBaseUrl.endsWith("/")) apiBaseUrl else "$apiBa
 
 android {
     namespace = "com.yakup24.elaro"
-    compileSdk = 37
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.yakup24.elaro"
@@ -72,6 +74,7 @@ dependencies {
 
     // Glide
     implementation(libs.glide)
+    kapt("com.github.bumptech.glide:compiler:5.0.7")
 
     // OkHttp & Gson
     implementation("com.squareup.okhttp3:okhttp:5.3.2")
