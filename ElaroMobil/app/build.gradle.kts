@@ -77,7 +77,7 @@ dependencies {
     kapt("com.github.bumptech.glide:compiler:5.0.7")
 
     // OkHttp & Gson
-    implementation("com.squareup.okhttp3:okhttp:5.3.2")
+    implementation("com.squareup.okhttp3:okhttp:5.4.0")
     implementation("com.google.code.gson:gson:2.14.0")
 
     // Retrofit + GSON Converter
