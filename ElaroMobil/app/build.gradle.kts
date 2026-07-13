@@ -16,7 +16,8 @@ val normalizedApiBaseUrl = if (apiBaseUrl.endsWith("/")) apiBaseUrl else "$apiBa
 
 android {
     namespace = "com.yakup24.elaro"
-    compileSdk = 36
+    compileSdk = 37
+    compileSdkMinor = 1
 
     defaultConfig {
         applicationId = "com.yakup24.elaro"
