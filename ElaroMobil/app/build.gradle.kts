@@ -74,7 +74,7 @@ dependencies {
 
     // Glide
     implementation(libs.glide)
-    kapt("com.github.bumptech.glide:compiler:5.0.7")
+    kapt("com.github.bumptech.glide:compiler:5.0.9")
 
     // OkHttp & Gson
     implementation("com.squareup.okhttp3:okhttp:5.4.0")
