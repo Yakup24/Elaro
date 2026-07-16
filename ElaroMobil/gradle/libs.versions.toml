@@ -14,7 +14,7 @@ okhttp = "5.4.0"
 appcompat = "1.7.1"
 material = "1.14.0"
 constraintlayout = "2.2.1"
-glide = "5.0.7"
+glide = "5.0.9"
 
 [libraries]
 androidx-cardview = { module = "androidx.cardview:cardview", version.ref = "cardview" }

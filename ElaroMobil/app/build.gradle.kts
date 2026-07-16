@@ -16,7 +16,8 @@ val normalizedApiBaseUrl = if (apiBaseUrl.endsWith("/")) apiBaseUrl else "$apiBa
 
 android {
     namespace = "com.yakup24.elaro"
-    compileSdk = 36
+    compileSdk = 37
+    compileSdkMinor = 1
 
     defaultConfig {
         applicationId = "com.yakup24.elaro"
@@ -74,7 +75,7 @@ dependencies {
 
     // Glide
     implementation(libs.glide)
-    kapt("com.github.bumptech.glide:compiler:5.0.7")
+    kapt("com.github.bumptech.glide:compiler:5.0.9")
 
     // OkHttp & Gson
     implementation("com.squareup.okhttp3:okhttp:5.4.0")
